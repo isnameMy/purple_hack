@@ -14,7 +14,7 @@ interface GameEvent {
 }
 
 // Добавлен стейт PRE_STORY для предыстории сезона
-type GameState = 'START' | 'THEORY' | 'SEASON_PICK' | 'PRE_STORY' | 'PLAYING' | 'SUMMARY';
+type GameState = 'LANDING' | 'START' | 'THEORY' | 'SEASON_PICK' | 'PRE_STORY' | 'PLAYING' | 'SUMMARY';
 
 const PRE_STORIES: Record<string, string> = {
   spring: "Прошло только 2 дня весны, а ты уже умудрился провалиться в лужу и испортить новые кроссы. Подумай: вот была бы страховка, не пришлось бы тратить свои карманные деньги на новые!",
@@ -24,7 +24,7 @@ const PRE_STORIES: Record<string, string> = {
 };
 
 const App = () => {
-  const [gameState, setGameState] = useState<GameState>('START');
+  const [gameState, setGameState] = useState<GameState>('LANDING');
   const [balance, setBalance] = useState(20000);
   const [events, setEvents] = useState<GameEvent[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -115,7 +115,16 @@ const App = () => {
               </button>
             </motion.div>
           )}
-
+          {/* Первая страница */}
+            {gameState === 'LANDING' && (
+             <motion.div key="landing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-10 text-center">
+              {/* Здесь будет наша визитка */}
+    
+              <button onClick={() => setGameState('START')} className="bg-blue-600 text-white p-4 rounded-xl">
+                Перейти к обучению
+              </button>
+              </motion.div>
+          )}
           {/* 2. THEORY SCREEN */}
           {gameState === 'THEORY' && (
             <motion.div key="theory" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="p-10 pt-20">
